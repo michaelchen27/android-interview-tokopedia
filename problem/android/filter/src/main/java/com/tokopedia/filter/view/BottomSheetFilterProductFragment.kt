@@ -1,5 +1,6 @@
 package com.tokopedia.filter.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,13 +12,14 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.RangeSlider
+import com.google.android.material.textfield.TextInputEditText
 import com.tokopedia.filter.R
 import java.text.NumberFormat
 import java.util.*
 
 class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener) :
     BottomSheetDialogFragment(),
-    View.OnClickListener {
+    View.OnClickListener, RangeSlider.OnChangeListener {
 
     private val TAG: String = BottomSheetFilterProductFragment::class.java.simpleName
 
@@ -25,6 +27,8 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
     private lateinit var arrListCity: ArrayList<String>
     private lateinit var btnFilter: MaterialButton
     private lateinit var rsPrice: RangeSlider
+    private lateinit var etMinPrice: TextInputEditText
+    private lateinit var etMaxPrice: TextInputEditText
     private var onCityFilterListener: OnCityFilterListener
 
     private var minPrice: Int = 0
@@ -51,6 +55,14 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
     }
 
     private fun initView(view: View) {
+        etMinPrice = view.findViewById(R.id.et_min_price)
+        etMinPrice.setText(Util.formatRupiah(minPrice))
+        etMinPrice.isEnabled = false
+
+        etMaxPrice = view.findViewById(R.id.et_max_price)
+        etMaxPrice.setText(Util.formatRupiah(maxPrice))
+        etMaxPrice.isEnabled = false
+
         btnFilter = view.findViewById(R.id.btn_filter)
         btnFilter.setOnClickListener(this)
 
@@ -67,17 +79,18 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
     }
 
     private fun addSlider() {
-        rsPrice.labelBehavior = LabelFormatter.LABEL_WITHIN_BOUNDS
+        rsPrice.labelBehavior = LabelFormatter.LABEL_GONE
         rsPrice.valueFrom = minPrice.toFloat()
         rsPrice.valueTo = maxPrice.toFloat()
         rsPrice.setValues(minPrice.toFloat(), maxPrice.toFloat())
-        rsPrice.stepSize = 100f
+        rsPrice.stepSize = 2000f
         rsPrice.setLabelFormatter {
             val localeID = Locale("in", "ID")
             val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(localeID)
             numberFormat.minimumFractionDigits = 0
             numberFormat.format(it)
         }
+        rsPrice.addOnChangeListener(this)
     }
 
 
@@ -111,6 +124,31 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
 
     interface OnCityFilterListener {
         fun onCityFilter(cityName: String);
+    }
+
+//    @SuppressLint("RestrictedApi")
+//    override fun onStartTrackingTouch(slider: RangeSlider) {
+//        val l = slider.values[0]
+//        val r = slider.values[1]
+//    }
+//
+//    @SuppressLint("RestrictedApi")
+//    override fun onStopTrackingTouch(slider: RangeSlider) {
+//        val l = slider.values[0].toInt()
+//        val r = slider.values[1].toInt()
+//
+//        etMinPrice.setText(Util.formatRupiah(l))
+//        etMaxPrice.setText(Util.formatRupiah(r))
+//
+//    }
+
+    @SuppressLint("RestrictedApi")
+    override fun onValueChange(slider: RangeSlider, value: Float, fromUser: Boolean) {
+        val l = slider.values[0].toInt()
+        val r = slider.values[1].toInt()
+
+        etMinPrice.setText(Util.formatRupiah(l))
+        etMaxPrice.setText(Util.formatRupiah(r))
     }
 
 
