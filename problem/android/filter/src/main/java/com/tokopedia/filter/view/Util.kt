@@ -11,5 +11,6 @@ class Util {
             numberFormat.minimumFractionDigits = 0
             return numberFormat.format(num)
         }
+
     }
 }

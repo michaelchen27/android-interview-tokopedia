@@ -38,46 +38,46 @@
         android:textColor="@color/colorBlack" />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="12">
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:weightSum="12">-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_weight="6"
-            android:hint="Minimum"
-            app:hintAnimationEnabled="true">
+    <!--        <com.google.android.material.textfield.TextInputLayout-->
+    <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginHorizontal="5dp"-->
+    <!--            android:layout_weight="6"-->
+    <!--            android:hint="Minimum"-->
+    <!--            app:hintAnimationEnabled="true">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </com.google.android.material.textfield.TextInputLayout>
+    <!--            <com.google.android.material.textfield.TextInputEditText-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent" />-->
+    <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_weight="6"
-            android:hint="Maximum"
-            app:hintAnimationEnabled="true">
+    <!--        <com.google.android.material.textfield.TextInputLayout-->
+    <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginHorizontal="5dp"-->
+    <!--            android:layout_weight="6"-->
+    <!--            android:hint="Maximum"-->
+    <!--            app:hintAnimationEnabled="true">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
+    <!--            <com.google.android.material.textfield.TextInputEditText-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent" />-->
+    <!--        </com.google.android.material.textfield.TextInputLayout>-->
+    <!--    </LinearLayout>-->
 
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/rs_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_filter"

@@ -9,7 +9,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.slider.LabelFormatter
+import com.google.android.material.slider.RangeSlider
 import com.tokopedia.filter.R
+import java.text.NumberFormat
+import java.util.*
 
 class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener) :
     BottomSheetDialogFragment(),
@@ -20,6 +24,7 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
     private lateinit var cgLocation: ChipGroup
     private lateinit var arrListCity: ArrayList<String>
     private lateinit var btnFilter: MaterialButton
+    private lateinit var rsPrice: RangeSlider
     private var onCityFilterListener: OnCityFilterListener
 
     private var minPrice: Int = 0
@@ -37,7 +42,6 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
         arrListCity = arguments?.getStringArrayList("arrListCity")!!
         minPrice = arguments?.getInt("minPrice")!!
         maxPrice = arguments?.getInt("maxPrice")!!
-        Log.d(TAG, "onCreateView: MinPrice $minPrice MaxPrice: $maxPrice")
         return inflater.inflate(R.layout.bottomsheet_fragment, container, false)
     }
 
@@ -57,7 +61,25 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
             }
         }
         cgLocation.isSingleSelection = true
+
+        rsPrice = view.findViewById(R.id.rs_price)
+        addSlider()
     }
+
+    private fun addSlider() {
+        rsPrice.labelBehavior = LabelFormatter.LABEL_WITHIN_BOUNDS
+        rsPrice.valueFrom = minPrice.toFloat()
+        rsPrice.valueTo = maxPrice.toFloat()
+        rsPrice.setValues(minPrice.toFloat(), maxPrice.toFloat())
+        rsPrice.stepSize = 100f
+        rsPrice.setLabelFormatter {
+            val localeID = Locale("in", "ID")
+            val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(localeID)
+            numberFormat.minimumFractionDigits = 0
+            numberFormat.format(it)
+        }
+    }
+
 
     private fun addChip(id: Int, label: String) {
         val chip: Chip = layoutInflater.inflate(R.layout.filter_chip, cgLocation, false) as Chip
@@ -90,5 +112,6 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
     interface OnCityFilterListener {
         fun onCityFilter(cityName: String);
     }
+
 
 }
