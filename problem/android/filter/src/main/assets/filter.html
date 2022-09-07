@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        body{padding:16px; margin:0} img{display: inline;max-width: 100% !important ;height:auto !important;} ol,ul{padding-left:15px} ul>li, ol>li{padding-left:0; margin-left:8px; margin-bottom:3px;}
+        td, th { padding: 4px; }
+    </style>
+</head>
+<body>
+
+A sample of how to filter a list with existing json.<br/>
+
+You are asked to improve the page by the following tasks.<br />
+<ul style="list-style-type:disc;">
+    <li>
+        Create Product Page.<br/> <br/>
+
+        <ol type="a">
+            <li>
+                Show list of products in a 2-column grid like illustration below:<br /><br />
+                <img src="sample_image_list_filter.png" /><br /><br />
+            </li>
+            <li>
+                Products list data source is from <b>products.json</b>.<br /><br />
+            </li>
+            <li>
+                The design is up to you but <b>this page needs to have at least these components with specific ID as it stated on the table below.</b>  <br /><br />
+                <table border="1">
+                    <thead>
+                    <tr>
+                        <th>View Component</th>
+                        <th>ID</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Product RecyclerView</td>
+                        <td>rv_product_list</td>
+                    </tr>
+                    <tr>
+                        <td>Product Image</td>
+                        <td>iv_product</td>
+                    </tr>
+                    <tr>
+                        <td>Product Name</td>
+                        <td>tv_product_name</td>
+                    </tr>
+                    <tr>
+                        <td>Product Price</td>
+                        <td>tv_product_price</td>
+                    </tr>
+                    <tr>
+                        <td>Product Slashed Price</td>
+                        <td>tv_product_price_slashed</td>
+                    </tr>
+                    <tr>
+                        <td>Product Discount</td>
+                        <td>tv_product_discount</td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td>tv_shop_city</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </li>
+        </ol>
+        <br /><br />
+    </li>
+    <li>
+        Create Filter BottomSheet.<br/> <br />
+
+        <ol type="a">
+            <li>
+                Create a filter button in the <b>Product Page</b>. When this button is clicked, Filter BottomSheet will be shown so user can configure the filter based on: <b>location</b> and <b>price</b>.<br/><br/>
+            </li>
+            <li>
+                Location filter should use <a href="https://material.io/components/chips/">Choice chips</a>, single selection, and only show 3 options:
+                <br />
+                (1) The location that appears most frequent in the list <br />
+                (2) The second most frequent item in the list, and <br />
+                (3) The third most frequent item in the list
+                <br/> <br />
+                For example: <br/>
+                Location:<br/>
+                [Jakarta] [Bali] [Bandung]<br/><br/>
+
+                This options should not be hardcoded.<br/><br/>
+            </li>
+            <li>
+                Price Filter should be enable user to input min and maximum price (can use <a href="https://material.io/components/sliders/">Slider</a>). Min and max price is based on the product list and should not be hardcoded.<br/><br/>
+                For example:<br/>
+                Min = 15000 (15000 is the minimum price in the list)<br/><br/>
+            </li>
+            <li>
+                In the bottom sheet, there will be a button to submit the filter configuration. If this submit button is clicked, the product list will reflect the change according to the given input.<br/><br/>
+            </li>
+            <li>
+                <b>This bottomsheet needs to have at least these components with specific ID as it stated on the table below.</b>
+                <br /><br />
+                <table border="1">
+                    <thead>
+                    <tr>
+                        <th>View Component</th>
+                        <th>ID</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Chip Group Location</td>
+                        <td>cg_location</td>
+                    </tr>
+                    <tr>
+                        <td>Chip</td>
+                        <td>
+                            chip_location_[idx]
+                            <br />
+                            (as a <b>tag</b>)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Price Range Slider</td>
+                        <td>range_slider_price</td>
+                    </tr>
+                    <tr>
+                        <td>Filter Button</td>
+                        <td>btn_filter</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p>
+                    Note for <b>Chip</b>:
+                <ul>
+                    <li>just for <b>Chip</b> view, please put <b>chip_location_[idx]</b> as a <b>tag</b>.</li>
+                    <li>[idx] starts from 0,1,2..</li>
+                    <li>Example : chip_location_0, chip_location_1, ...</li>
+                </ul>
+                </p>
+                <br /><br />
+            </li>
+        </ol>
+    </li>
+    <li>
+        Don't add new library.
+    </li>
+</ul>
+
+</body>
+</html>

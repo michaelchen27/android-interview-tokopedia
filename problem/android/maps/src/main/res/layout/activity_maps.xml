@@ -1,0 +1,62 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:lines="1"
+            android:hint="Masukkan nama negara"/>
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Cari"/>
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        tools:context="com.example.mapwithmarker.view.MapsMarkerActivity" />
+
+    <TextView
+        android:id="@+id/txtCountryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama negara: "/>
+
+    <TextView
+        android:id="@+id/txtCountryCapital"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ibukota: "/>
+
+    <TextView
+        android:id="@+id/txtCountryPopulation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jumlah penduduk: "/>
+
+    <TextView
+        android:id="@+id/txtCountryCallCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kode telepon: "/>
+
+</LinearLayout>

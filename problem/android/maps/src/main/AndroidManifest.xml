@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tokopedia.maps" >
+
+    <application>
+        <activity android:name=".MapsActivity"
+            android:label="@string/maps">
+        </activity>
+
+        <activity android:name=".MapsCaseActivity"
+            android:label="@string/maps">
+        </activity>
+    </application>
+
+</manifest>
+

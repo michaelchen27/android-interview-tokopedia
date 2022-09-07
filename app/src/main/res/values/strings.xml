@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Tokopedia Test Project</string>
+    <string name="algorithm">Algorithm</string>
+    <string name="android_implementation">Android</string>
+</resources>
