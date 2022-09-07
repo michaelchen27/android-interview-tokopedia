@@ -33,6 +33,9 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
 
     private var minPrice: Int = 0
     private var maxPrice: Int = 0
+    private var minSelectedPrice: Int = 0
+    private var maxSelectedPrice: Int = 0
+
 
     init {
         this.onCityFilterListener = cityFilterListener
@@ -46,6 +49,9 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
         arrListCity = arguments?.getStringArrayList("arrListCity")!!
         minPrice = arguments?.getInt("minPrice")!!
         maxPrice = arguments?.getInt("maxPrice")!!
+        minSelectedPrice = arguments?.getInt("minPrice")!!
+        maxSelectedPrice = arguments?.getInt("maxPrice")!!
+
         return inflater.inflate(R.layout.bottomsheet_fragment, container, false)
     }
 
@@ -82,7 +88,7 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
         rsPrice.labelBehavior = LabelFormatter.LABEL_GONE
         rsPrice.valueFrom = minPrice.toFloat()
         rsPrice.valueTo = maxPrice.toFloat()
-        rsPrice.setValues(minPrice.toFloat(), maxPrice.toFloat())
+        rsPrice.setValues(minSelectedPrice.toFloat(), maxSelectedPrice.toFloat())
         rsPrice.stepSize = 2000f
         rsPrice.setLabelFormatter {
             val localeID = Locale("in", "ID")
@@ -97,6 +103,7 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
     private fun addChip(id: Int, label: String) {
         val chip: Chip = layoutInflater.inflate(R.layout.filter_chip, cgLocation, false) as Chip
         chip.id = id
+        chip.tag = "chip_location_$id"
         chip.text = label
         cgLocation.addView(chip)
     }
@@ -104,51 +111,40 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
     private fun getSelectedCityChip(): String {
         var cityName = ""
         val ids: List<Int> = cgLocation.checkedChipIds
-        for (id in ids) {
-            val chip: Chip = cgLocation.findViewById(id)
-            cityName = chip.text.toString()
-            Log.d(TAG, "getSelectedCityChip: $chip with $id (${chip.text}) is checked")
+        if (ids.isNotEmpty()) {
+            for (id in ids) {
+                val chip: Chip = cgLocation.findViewById(id)
+                cityName = chip.text.toString()
+                Log.d(TAG, "getSelectedCityChip: $chip with $id (${chip.text}) is checked")
+            }
+            return cityName
+        } else {
+            return ""
         }
-        return cityName
     }
+
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_filter -> {
                 val cityName = getSelectedCityChip()
-                onCityFilterListener.onCityFilter(cityName)
+                onCityFilterListener.onCityFilter(cityName, minSelectedPrice, maxSelectedPrice)
                 this.dismiss()
             }
         }
     }
 
     interface OnCityFilterListener {
-        fun onCityFilter(cityName: String);
+        fun onCityFilter(cityName: String, minSelectedPrice: Int, maxSelectedPrice: Int);
     }
-
-//    @SuppressLint("RestrictedApi")
-//    override fun onStartTrackingTouch(slider: RangeSlider) {
-//        val l = slider.values[0]
-//        val r = slider.values[1]
-//    }
-//
-//    @SuppressLint("RestrictedApi")
-//    override fun onStopTrackingTouch(slider: RangeSlider) {
-//        val l = slider.values[0].toInt()
-//        val r = slider.values[1].toInt()
-//
-//        etMinPrice.setText(Util.formatRupiah(l))
-//        etMaxPrice.setText(Util.formatRupiah(r))
-//
-//    }
 
     @SuppressLint("RestrictedApi")
     override fun onValueChange(slider: RangeSlider, value: Float, fromUser: Boolean) {
-        val l = slider.values[0].toInt()
-        val r = slider.values[1].toInt()
+        minSelectedPrice = slider.values[0].toInt()
+        maxSelectedPrice = slider.values[1].toInt()
 
-        etMinPrice.setText(Util.formatRupiah(l))
-        etMaxPrice.setText(Util.formatRupiah(r))
+        etMinPrice.setText(Util.formatRupiah(minSelectedPrice))
+        etMaxPrice.setText(Util.formatRupiah(maxSelectedPrice))
     }
 
 

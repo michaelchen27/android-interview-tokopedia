@@ -73,10 +73,12 @@ class ProductActivity : AppCompatActivity(), View.OnClickListener,
             R.id.fab_filter -> {
                 setupChip()
                 setupSlider()
-                bottomSheetFilterProductFragment.show(
-                    supportFragmentManager,
-                    "BottomSheetFilterProductFragment"
-                )
+                if (!bottomSheetFilterProductFragment.isAdded) {
+                    bottomSheetFilterProductFragment.show(
+                        supportFragmentManager,
+                        "BottomSheetFilterProductFragment"
+                    )
+                }
             }
         }
     }
@@ -106,10 +108,11 @@ class ProductActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onCityFilter(cityName: String) {
-        val productFilterByCity = productList.filter { it.shop.city == cityName }
-        if (productFilterByCity.isNotEmpty()) {
-            productAdapter.updateData(productFilterByCity)
+    override fun onCityFilter(cityName: String, minSelectedPrice: Int, maxSelectedPrice: Int) {
+        val productFiltered = productList.filter { it.shop.city.contains(cityName) }
+            .filter { it.priceInt in minSelectedPrice..maxSelectedPrice }
+        if (productFiltered.isNotEmpty()) {
+            productAdapter.updateData(productFiltered)
         }
 
     }

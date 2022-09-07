@@ -42,9 +42,9 @@ class ProductAdapter(
                 .load(imageUrl)
                 .into(ivProduct)
 
-            if (discountPercentage != 0) {
-                llProductPriceSlashed.visibility = View.VISIBLE
-            }
+
+            llProductPriceSlashed.visibility =
+                if (discountPercentage != 0) View.VISIBLE else View.GONE
 
             tvTitle.text = name
             tvProductPrice.text = price?.let { Util.formatRupiah(it) }
@@ -52,36 +52,6 @@ class ProductAdapter(
             tvProductPriceSlashed.text = priceSlashed?.let { Util.formatRupiah(it) }
             tvShopCity.text = shopCity
         }
-
-//        override fun getFilter(): Filter {
-//            return object : Filter() {
-//                override fun performFiltering(constraint: CharSequence?): FilterResults {
-//                    val charFilter = constraint.toString()
-//                    productFilterList = if (charFilter.isEmpty()) {
-//                        productList
-//                    } else {
-//                        val resultList = ArrayList<ProductX>()
-//                        for (row in productList) {
-//                            if (row.shop.city.toLowerCase(Locale.ROOT).contains(
-//                                    charFilter.toLowerCase(Locale.ROOT)
-//                                )
-//                            ) {
-//                                resultList.add(row)
-//                            }
-//                        }
-//                        resultList.toList()
-//                    }
-//                    val filterResults = FilterResults()
-//                    filterResults.values = productFilterList
-//                    return filterResults
-//                }
-//
-//                override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-//                    productFilterList = results?.values as List<ProductX>
-//                    notifyDataSetChanged()
-//                }
-//            }
-//        }
     }
 
 
