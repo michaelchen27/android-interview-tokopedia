@@ -12,7 +12,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.gson.Gson
 import com.tokopedia.maps.data.api.RestCountriesInterface
 import com.tokopedia.maps.vo.CountryItem
-import io.reactivex.disposables.CompositeDisposable
 import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.json.JSONObject
@@ -34,7 +33,7 @@ open class MapsActivity : AppCompatActivity() {
     private var buttonSubmit: View? = null
 
     private val BASE_URL = "https://restcountries.com/"
-    private var myCompositeDisposable: CompositeDisposable? = null
+//    private var myCompositeDisposable: CompositeDisposable? = null
 
     private val gson: Gson = Gson()
 
@@ -42,7 +41,7 @@ open class MapsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        myCompositeDisposable = CompositeDisposable()
+//        myCompositeDisposable = CompositeDisposable()
         bindViews()
         initListeners()
 //        loadMap()
@@ -171,11 +170,6 @@ open class MapsActivity : AppCompatActivity() {
 
     fun loadMap() {
         mapFragment!!.getMapAsync { googleMap -> this@MapsActivity.googleMap = googleMap }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        myCompositeDisposable?.clear()
     }
 }
 
