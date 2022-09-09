@@ -89,7 +89,7 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
         rsPrice.valueFrom = minPrice.toFloat()
         rsPrice.valueTo = maxPrice.toFloat()
         rsPrice.setValues(minSelectedPrice.toFloat(), maxSelectedPrice.toFloat())
-        rsPrice.stepSize = 2000f
+        rsPrice.stepSize = resources.getInteger(R.integer.sliderStepSize).toFloat()
         rsPrice.setLabelFormatter {
             val localeID = Locale("in", "ID")
             val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(localeID)

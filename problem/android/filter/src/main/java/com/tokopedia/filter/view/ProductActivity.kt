@@ -109,11 +109,10 @@ class ProductActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun onCityFilter(cityName: String, minSelectedPrice: Int, maxSelectedPrice: Int) {
-        val productFiltered = productList.filter { it.shop.city.contains(cityName) }
-            .filter { it.priceInt in minSelectedPrice..maxSelectedPrice }
-        if (productFiltered.isNotEmpty()) {
-            productAdapter.updateData(productFiltered)
-        }
-
+        val productFilteredByCity =
+            if (cityName.isNotEmpty()) productList.filter { it.shop.city == cityName } else productList
+        val productFilteredByPrice =
+            productFilteredByCity.filter { it.priceInt in minSelectedPrice..maxSelectedPrice }
+        productAdapter.updateData(productFilteredByPrice)
     }
 }
