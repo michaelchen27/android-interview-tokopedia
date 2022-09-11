@@ -2,7 +2,6 @@ package com.tokopedia.filter.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ import com.tokopedia.filter.R
 import java.text.NumberFormat
 import java.util.*
 
-class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener) :
+class BottomSheetFilterProductFragment(cityFilterListener: OnFilterListener) :
     BottomSheetDialogFragment(),
     View.OnClickListener, RangeSlider.OnChangeListener {
 
@@ -29,7 +28,7 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
     private lateinit var rsPrice: RangeSlider
     private lateinit var etMinPrice: TextInputEditText
     private lateinit var etMaxPrice: TextInputEditText
-    private var onCityFilterListener: OnCityFilterListener
+    private var onFilterListener: OnFilterListener
 
     private var minPrice: Int = 0
     private var maxPrice: Int = 0
@@ -38,7 +37,7 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
 
 
     init {
-        this.onCityFilterListener = cityFilterListener
+        this.onFilterListener = cityFilterListener
     }
 
     override fun onCreateView(
@@ -115,7 +114,6 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
             for (id in ids) {
                 val chip: Chip = cgLocation.findViewById(id)
                 cityName = chip.text.toString()
-                Log.d(TAG, "getSelectedCityChip: $chip with $id (${chip.text}) is checked")
             }
             return cityName
         } else {
@@ -128,14 +126,14 @@ class BottomSheetFilterProductFragment(cityFilterListener: OnCityFilterListener)
         when (v?.id) {
             R.id.btn_filter -> {
                 val cityName = getSelectedCityChip()
-                onCityFilterListener.onCityFilter(cityName, minSelectedPrice, maxSelectedPrice)
+                onFilterListener.onFilter(cityName, minSelectedPrice, maxSelectedPrice)
                 this.dismiss()
             }
         }
     }
 
-    interface OnCityFilterListener {
-        fun onCityFilter(cityName: String, minSelectedPrice: Int, maxSelectedPrice: Int);
+    interface OnFilterListener {
+        fun onFilter(cityName: String, minSelectedPrice: Int, maxSelectedPrice: Int);
     }
 
     @SuppressLint("RestrictedApi")

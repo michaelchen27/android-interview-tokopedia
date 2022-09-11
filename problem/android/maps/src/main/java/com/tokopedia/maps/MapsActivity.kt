@@ -1,7 +1,6 @@
 package com.tokopedia.maps
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -25,7 +24,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
-    private val TAG = MapsActivity::class.java.simpleName
     private var mapFragment: SupportMapFragment? = null
     private var googleMap: GoogleMap? = null
 
@@ -38,7 +36,6 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var buttonSubmit: View? = null
 
     private val BASE_URL = "https://restcountries.com/"
-//    private var myCompositeDisposable: CompositeDisposable? = null
 
     private val gson: Gson = Gson()
 
@@ -46,7 +43,6 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-//        myCompositeDisposable = CompositeDisposable()
         bindViews()
         loadMap()
         initListeners()
@@ -69,7 +65,6 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             // 1. pin point to the map
             // 2. set the country information to the textViews.
 
-            // Loading
             textCountryName.text = ("Nama Negara: Loading...")
             textCountryCapital.text = ("Ibukota: Loading...")
             textCountryPopulation.text = ("Jumlah Penduduk: Loading...")
@@ -102,7 +97,6 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
                         val jsonResponseString = response.body()?.string()
-                        Log.d(TAG, "onResponse: $jsonResponseString")
                         setupTextViews(jsonResponseString.toString())
                     }
                 } else {
@@ -110,14 +104,13 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
 
-            // 200
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
             }
         })
     }
 
     private fun errToast(code: Int) {
-        var msg: String
+        val msg: String
         if (code == 404) {
             msg = "Data not found"
             googleMap?.clear()
@@ -141,7 +134,6 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val countryItem: CountryItem = gson.fromJson(json, CountryItem::class.java)
             val latLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
             val countryName = countryItem.name.common
-            Log.d("LATLNG", "LATLNG: $latLng")
 
             if (googleMap != null) {
                 googleMap?.addMarker(
@@ -169,7 +161,6 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupTextViews(responses: String) {
         try {
-            Log.d(TAG, "RESPONSE: $responses")
             val jsonArray = JSONArray(responses)
             val arrayLength = jsonArray.length()
             if (arrayLength > 0) {
@@ -205,7 +196,6 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         } catch (e: HttpException) {
-            Log.e(TAG, "setupTextViews: ${e.message}")
             val msg = if (e.code() == 404) "Data not found" else "Something went wrong"
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
@@ -220,50 +210,6 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
-//        // Set Marker
-//        val latLng = LatLng(-5.00, 120.00)
-//        googleMap.addMarker(
-//            MarkerOptions()
-//                .position(latLng)
-//                .title("Marker in Sydney")
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-//        )
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 2.0f))
 
     }
 }
-
-
-/* UNUSED CODE
-*
-*
-* //        myCompositeDisposable?.add(
-//            api.getCountryDetails(countryName)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(this::handleResponse)
-//        )
-*
-*
-*
-*
-* //    // Try using GsonConverterFactory
-//    private fun handleResponse(countryDetails: Country) {
-//        try {
-//            val lastCountryDetails = countryDetails.last()
-//            val capital = lastCountryDetails.capital.first()
-//            val population = lastCountryDetails.population.toString()
-//            val callCode =
-//                "${lastCountryDetails.idd.root}${lastCountryDetails.idd.suffixes.last()}"
-//
-//            textCountryCapital.text = ("Ibukota: $capital")
-//            textCountryPopulation.text = ("Jumlah penduduk: $population")
-//            textCountryCallCode.text = ("Kode Telepon: $callCode")
-//        } catch (e: Exception) {
-//            Log.e(TAG, "handleResponse: $e")
-//            Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-*
-*
-* */

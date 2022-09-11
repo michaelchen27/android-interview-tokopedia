@@ -11,8 +11,6 @@ object Solution {
         val rows = matrix.size
         val cols = matrix[0].size
 
-        Log.d("dbg", "rows: $rows cols: $cols")
-
         // Return 0 if empty
         if (rows == 0) {
             return 0
@@ -23,13 +21,11 @@ object Solution {
 
         // Calculate 1st row sum
         for (j in 1 until cols) {
-            Log.d("dbgrow", "table[0][$j] = table[0][${j - 1}] + matrix[0][$j]]")
             table[0][j] = table[0][j - 1] + matrix[0][j]
         }
 
         // Calculate 1st col sum
         for (i in 1 until rows) {
-            Log.d("dbgcol", "table[$i][0] = table[${i - 1}][0] + matrix[$i][0]]")
             table[i][0] = table[i - 1][0] + matrix[i][0]
         }
 

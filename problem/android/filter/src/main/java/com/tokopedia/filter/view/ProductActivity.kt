@@ -15,7 +15,7 @@ import com.tokopedia.filter.view.data.vo.ProductX
 import java.io.InputStream
 
 class ProductActivity : AppCompatActivity(), View.OnClickListener,
-    BottomSheetFilterProductFragment.OnCityFilterListener {
+    BottomSheetFilterProductFragment.OnFilterListener {
     private val TAG: String = ProductActivity::class.java.simpleName
 
     private lateinit var rvProductList: RecyclerView
@@ -50,14 +50,12 @@ class ProductActivity : AppCompatActivity(), View.OnClickListener,
                 applicationContext!!.resources.openRawResource(R.raw.products)
             json = inputStream.bufferedReader().use { it.readText() }
 
-            Log.d("json", "readJSON: $json")
             val gson = Gson()
             val productObj = gson.fromJson(json, Product::class.java)
-            Log.d("pf", "readJSON: $productObj")
             productList = productObj.data.products
 
         } catch (e: Exception) {
-            Log.e("e", "readJSON: $e")
+            Log.e(TAG, "readJSON: $e")
         }
     }
 
@@ -108,7 +106,7 @@ class ProductActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onCityFilter(cityName: String, minSelectedPrice: Int, maxSelectedPrice: Int) {
+    override fun onFilter(cityName: String, minSelectedPrice: Int, maxSelectedPrice: Int) {
         val productFilteredByCity =
             if (cityName.isNotEmpty()) productList.filter { it.shop.city == cityName } else productList
         val productFilteredByPrice =
