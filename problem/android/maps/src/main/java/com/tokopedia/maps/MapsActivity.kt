@@ -35,8 +35,6 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var editText: EditText? = null
     private var buttonSubmit: View? = null
 
-    private val BASE_URL = "https://restcountries.com/"
-
     private val gson: Gson = Gson()
 
 
@@ -82,7 +80,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun loadData(countryName: String) {
         val requestInterface = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(MapsConstant.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
@@ -169,9 +167,11 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 val json = lastObj.toString()
                 val countryItem: CountryItem = gson.fromJson(json, CountryItem::class.java)
 
-                val capital = countryItem.capital[0]
-                val population = countryItem.population.toString()
-                val callCode = "${countryItem.idd.root}${countryItem.idd.suffixes.first()}"
+                val capital = if (countryItem.capital != null) countryItem.capital[0] else ""
+                val population =
+                    if (countryItem.population != null) countryItem.population.toString() else ""
+                val callCode =
+                    if (countryItem.idd.root != null && countryItem.idd.suffixes != null) "${countryItem.idd.root}${countryItem.idd.suffixes.first()}" else ""
 
                 textCountryCapital.text = ("Ibukota: $capital")
                 textCountryPopulation.text = ("Jumlah penduduk: $population")
@@ -204,12 +204,10 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun loadMap() {
         mapFragment?.getMapAsync(this)
-
     }
 
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
-
     }
 }

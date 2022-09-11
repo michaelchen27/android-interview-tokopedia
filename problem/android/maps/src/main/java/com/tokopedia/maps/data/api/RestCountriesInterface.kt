@@ -11,10 +11,7 @@ interface RestCountriesInterface {
 
     // https://restcountries.com/v3.1/name/{name}
 
-    @GET("v3.1/name/{name}")
-    fun getCountryDetails(@Path("name") name: String): Observable<Country>
-
-    @GET("v3.1/name/{name}")
+    @GET("name/{name}")
     fun getString(@Path("name") name: String): Call<ResponseBody>
 
 }
