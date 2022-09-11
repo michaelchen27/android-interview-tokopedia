@@ -7,8 +7,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.Gson
 import com.tokopedia.maps.data.api.RestCountriesInterface
 import com.tokopedia.maps.vo.CountryItem
@@ -19,7 +24,7 @@ import retrofit2.*
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-open class MapsActivity : AppCompatActivity() {
+open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val TAG = MapsActivity::class.java.simpleName
     private var mapFragment: SupportMapFragment? = null
     private var googleMap: GoogleMap? = null
@@ -43,8 +48,8 @@ open class MapsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_maps)
 //        myCompositeDisposable = CompositeDisposable()
         bindViews()
+        loadMap()
         initListeners()
-//        loadMap()
     }
 
     private fun bindViews() {
@@ -112,14 +117,52 @@ open class MapsActivity : AppCompatActivity() {
     }
 
     private fun errToast(code: Int) {
-        val msg = if (code == 404) "Data not found" else "Something went wrong"
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-
+        var msg: String
         if (code == 404) {
+            msg = "Data not found"
+            googleMap?.clear()
+            googleMap?.animateCamera(CameraUpdateFactory.zoomOut(), 500, null)
             textCountryName.text = ("Nama Negara:")
             textCountryCapital.text = ("Ibukota:")
             textCountryPopulation.text = ("Jumlah Penduduk:")
             textCountryCallCode.text = ("Kode Telepon:")
+
+        } else {
+            msg = "Something went wrong"
+        }
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun addMapMarkers(jsonArray: JSONArray) {
+        googleMap?.clear()
+        var lastCountryLatLng = LatLng(0.00, 0.00)
+        for (i in 0 until jsonArray.length()) {
+            val json = jsonArray.getJSONObject(i).toString()
+            val countryItem: CountryItem = gson.fromJson(json, CountryItem::class.java)
+            val latLng = LatLng(countryItem.latlng[0], countryItem.latlng[1])
+            val countryName = countryItem.name.common
+            Log.d("LATLNG", "LATLNG: $latLng")
+
+            if (googleMap != null) {
+                googleMap?.addMarker(
+                    MarkerOptions()
+                        .position(latLng)
+                        .title(countryName)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                )
+            }
+
+            if (i == jsonArray.length() - 1) {
+                lastCountryLatLng = latLng
+            }
+        }
+
+        if (googleMap != null) {
+            googleMap?.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(lastCountryLatLng, 5f),
+                500,
+                null
+            )
         }
     }
 
@@ -130,11 +173,12 @@ open class MapsActivity : AppCompatActivity() {
             val jsonArray = JSONArray(responses)
             val arrayLength = jsonArray.length()
             if (arrayLength > 0) {
+                addMapMarkers(jsonArray)
                 val lastObj = jsonArray.getJSONObject(arrayLength - 1)
                 val json = lastObj.toString()
                 val countryItem: CountryItem = gson.fromJson(json, CountryItem::class.java)
 
-                val capital = countryItem.capital
+                val capital = countryItem.capital[0]
                 val population = countryItem.population.toString()
                 val callCode = "${countryItem.idd.root}${countryItem.idd.suffixes.first()}"
 
@@ -168,8 +212,24 @@ open class MapsActivity : AppCompatActivity() {
     }
 
 
-    fun loadMap() {
-        mapFragment!!.getMapAsync { googleMap -> this@MapsActivity.googleMap = googleMap }
+    private fun loadMap() {
+        mapFragment?.getMapAsync(this)
+
+    }
+
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        this.googleMap = googleMap
+//        // Set Marker
+//        val latLng = LatLng(-5.00, 120.00)
+//        googleMap.addMarker(
+//            MarkerOptions()
+//                .position(latLng)
+//                .title("Marker in Sydney")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+//        )
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 2.0f))
+
     }
 }
 
