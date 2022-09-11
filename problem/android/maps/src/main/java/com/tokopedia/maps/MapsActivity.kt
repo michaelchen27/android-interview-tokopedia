@@ -63,19 +63,30 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             // 1. pin point to the map
             // 2. set the country information to the textViews.
 
-            textCountryName.text = ("Nama Negara: Loading...")
-            textCountryCapital.text = ("Ibukota: Loading...")
-            textCountryPopulation.text = ("Jumlah Penduduk: Loading...")
-            textCountryCallCode.text = ("Kode Telepon: Loading...")
-
+            setLoadingTV()
 
             val searchQuery = editText?.text.toString()
             if (searchQuery.isNotEmpty()) {
                 loadData(searchQuery)
             } else {
                 Toast.makeText(this, "Search box is empty", Toast.LENGTH_SHORT).show()
+                setEmptyTV()
             }
         }
+    }
+
+    private fun setEmptyTV() {
+        textCountryName.text = ("Nama Negara:")
+        textCountryCapital.text = ("Ibukota:")
+        textCountryPopulation.text = ("Jumlah Penduduk:")
+        textCountryCallCode.text = ("Kode Telepon:")
+    }
+
+    private fun setLoadingTV() {
+        textCountryName.text = ("Nama Negara: Loading...")
+        textCountryCapital.text = ("Ibukota: Loading...")
+        textCountryPopulation.text = ("Jumlah Penduduk: Loading...")
+        textCountryCallCode.text = ("Kode Telepon: Loading...")
     }
 
     private fun loadData(countryName: String) {
@@ -113,10 +124,7 @@ open class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             msg = "Data not found"
             googleMap?.clear()
             googleMap?.animateCamera(CameraUpdateFactory.zoomOut(), 500, null)
-            textCountryName.text = ("Nama Negara:")
-            textCountryCapital.text = ("Ibukota:")
-            textCountryPopulation.text = ("Jumlah Penduduk:")
-            textCountryCallCode.text = ("Kode Telepon:")
+            setEmptyTV()
 
         } else {
             msg = "Something went wrong"
